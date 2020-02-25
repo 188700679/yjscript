@@ -1,0 +1,97 @@
+#!/bin/bash
+author="So:Lo"
+author_qq="269995848@qq.com"
+qqun="597755927"
+git_addree=""
+VERSION=1.0
+project_path=$(cd `dirname $0`; pwd)
+project_name="${project_path##*/}"
+
+
+distName(){
+    if grep -Eqii "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+        DISTRO='CentOS'
+        PM='yum'
+    elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
+        DISTRO='RHEL'
+        PM='yum'
+    elif grep -Eqi "Aliyun" /etc/issue || grep -Eq "Aliyun" /etc/*-release; then
+        DISTRO='Aliyun'
+        PM='yum'
+    elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
+        DISTRO='Fedora'
+        PM='yum'
+    elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
+        DISTRO='Debian'
+        PM='apt'
+    elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
+        DISTRO='Ubuntu'
+        PM='apt'
+    elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
+        DISTRO='Raspbian'
+        PM='apt'
+    else
+        DISTRO='unknow'
+    fi
+    echo $DISTRO
+}
+
+yjscript_help(){
+        echo "
+command         detail
+
+port            端口类操作
+docker          docker相关操作
+lnmp		php环境安装
+"
+
+}
+
+help(){
+    cat << EOF
+==================================================================
+		欢迎使用linux一键辅助工具$project_name $VERSION
+		如有任何问题可以联系$author_qq
+		qq交流群:597755927    
+		本工具完全开源
+		输入:./yjscript --help 查看所有帮助
+=================================================================
+EOF
+}
+docker_help(){
+
+    echo "
+command		detail
+
+-check		检查docker版本
+-compose	安装docker-compose
+-compose -v	检查compose版本
+-lnmp		安装lnmp环境,需要先安装docker
+-install        安装docker
+"
+}
+
+port(){
+    echo "
+command		detail
+
+-add		添加一个端口
+-query		查询一个端口是否存在
+-delete		删除一个端口
+-all		查看所有开放的端口
+"
+}
+
+
+lnmp_help(){
+
+    echo "
+command		detail
+
+-yjlnmp		只适用于纯净环境安装php环境
+-open		打开lnmp环境
+-close		关闭lnmp环境
+-change php56      切换php5.6,第一次切换需要耗时5min
+-change php7	   切换php7	
+"
+}	

@@ -1,0 +1,268 @@
+#/bin/bash
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export MC="-j$(nproc)"
+export PATH
+LANG=en_US.UTF-8
+
+source assets/detail
+source assets/docker	
+source assets/notice
+
+if [ ! -n "$1" ];then
+    readonly author author_qq
+    help
+    exit 1
+fi
+
+
+
+command=$1
+isPy26=$(python -V 2>&1|grep '2.6.')
+if [ "${isPy26}" ];then
+        red_error "${isCentos7}";
+fi
+
+Get_Pack_Manager(){
+    if [ -f "/usr/bin/yum" ] && [ -d "/etc/yum.repos.d" ]; then
+            PM="yum"
+    elif [ -f "/usr/bin/apt-get" ] && [ -f "/usr/bin/dpkg" ]; then
+            PM="apt-get"
+    fi
+}
+
+
+docker_install(){
+    docker -v > /dev/null 2>&1 
+    if [ $? -ne 0 ];then
+	while [ "$go" != 'y' ] && [ "$go" != 'n' ]
+        do
+	read -p "${isDockerInstall}" go;
+        done	
+	if [ "$go" == 'n' ];then
+	    exit
+	fi
+ 
+	if [ ${PM} == 'yum' ];then
+	    docker_yum	
+	fi
+
+	if [ ${PM} == 'apt-get' ];then
+	    docker_apt
+	fi
+    else
+	echo "${currentVersion}" && docker -v	
+    fi
+    return 1	
+}
+
+git(){
+    if [ ${PM} == 'yum' ];then
+	sudo yum -y install git
+
+    fi
+    if [ ${PM} == 'apt-get' ];then
+	sudo apt-get -y install git
+    fi
+
+}
+
+case $command in
+port)
+    #if [ `distName` != 'CentOS' ];then
+#	echo '抱歉,暂不支持cetnos7一下的版本'
+#	exit 1
+ #   fi
+    if [ "$2" == '--help' ];then
+	port
+	exit 1
+    fi
+
+	
+    firewall-cmd --zone=public --add-port=80/tcp --permanent > /dev/null 2>&1 &
+    if [ !  $? ];then
+        green_info "loading firewalld...................."
+	yum -y install firewalld && systemctl start firewalld
+    fi
+
+    if [ "$2" == '-add' ];then
+	if [ ! $3  ];then
+            red_error "${paramsError}"	
+	fi
+
+	#command="firewall-cmd --zone=public --add-port="
+	#commandEnd="/tcp --permanent"
+	#eval ${command}$3${commandEnd}
+
+        firewall-cmd --zone=public --add-port=$3/tcp --permanent >/dev/null && firewall-cmd --reload
+	exit 1
+    fi
+
+    if [ "$2" == '-query' ];then
+	if [ ! $3 ];then
+	    red_error "${portError}"
+	    exit 1		
+	fi
+        firewall-cmd --zone=public --query-port=$3/tcp --permanent
+	exit 1
+    fi
+
+    if [ "$2" == '-delete' ];then
+	firewall-cmd --zone=public --remove-port=$3/tcp --permanent >/dev/null && firewall-cmd --reload
+	exit 1
+    fi
+    
+    if [ "$2" == '-all' ];then
+	firewall-cmd --zone=public --list-ports
+	exit 1
+    fi 
+
+    if [ $2 != '-all' ] && [ ! $3 ];then
+        red_error "${paramsError}"
+	exit 1
+    fi
+    red_error "${paramsError}"
+    ;; 
+docker)
+
+    Get_Pack_Manager
+    if [ "$2" == '--help' ];then
+        docker_help
+        exit 1
+    fi
+
+    if [ "$2" == '-check' ];then
+        docker_install
+	exit 1
+    fi	
+    
+    if [ "$2" == '-compose' ];then
+	
+        if [ "$3" == '-v' ];then
+            docker-compose -v
+	    	
+            if [ $? -ne 0 ];then
+		red_error "${noCompose}"
+	    fi	
+	    exit 1
+        fi	
+        yj_compose
+	exit 1
+    fi	
+    if [ "$2" == '-lnmp'  ];then 
+	
+        docker -v > /dev/null 2>&1 
+        if [ $? -ne 0 ];then
+	    while [ "$go" != 'y' ] && [ "$go" != 'n' ]
+        do
+	    read -p "${isDockerInstall}" go;
+        done	
+	fi
+	if [ "$go" == 'n' ];then
+           exit
+        fi	
+	
+	if [ "$go" == 'y' ];then
+	    if [ ${PM} == 'yum' ];then
+	        docker_yum	
+	    fi
+
+	    if [ ${PM} == 'apt-get' ];then
+	        docker_apt
+	    fi
+        fi
+ 
+	git
+
+	yj_compose
+        yj_lnmp
+	exit 1
+    fi
+
+    if [ "$2" == '-install'  ];then
+        docker_install
+	exit 1
+    fi
+
+    red_error "${paramsError}"
+;;
+lnmp)
+
+    Get_Pack_Manager
+    if [ "$2" == '--help' ];then
+        lnmp_help
+        exit 1
+    fi
+    if [ "$2" == '-open' ];then
+        cd www && docker-compose up -d
+        exit 1
+    fi
+    if [ "$2" == '-close' ];then
+        cd www && docker-compose down
+        exit 1
+    fi
+    if [ "$2" == '-change' ];then
+    	if [ "$3" == 'php56' ];then
+	    blue_info "loading............................"
+	    \cp -f assets/package/privacy/docker-compose.56.yml www/docker-compose.yml
+	    \cp -f assets/package/privacy/localhost.56.conf www/services/nginx/conf.d/localhost.conf
+	    cd www && docker-compose build php56 
+	    docker container stop php  && docker-compose down > /dev/null 2>&1
+	    docker-compose up -d	
+	    docker exec -it nginx nginx -s reload
+	    echo "切换成功" && exit 1			
+	fi
+    	if [ "$3" == 'php7' ];then
+	    \cp -f assets/package/privacy/docker-compose.72.yml www/docker-compose.yml
+	    \cp -f assets/package/privacy/localhost.conf www/services/nginx/conf.d/localhost.conf
+	    cd www && docker-compose build php > /dev/null 2>&1
+	    docker container stop php56  && docker-compose down > /dev/null 2>&1
+	    docker-compose up -d	
+	    docker exec -it nginx nginx -s reload
+	    echo "切换成功" && exit 1			
+	fi
+    fi
+    if [ "$2" == '-yjlnmp'  ];then 
+	blue_info "${yjlnmpInstall}"
+	echo 3
+	sleep 1
+	echo 2
+	sleep 1
+	echo 1 
+	sleep 1
+        docker -v > /dev/null 2>&1 
+        if [ $? -ne 0 ];then
+ 
+	    if [ ${PM} == 'yum' ];then
+	        docker_yum	
+	    fi
+
+	    if [ ${PM} == 'apt-get' ];then
+	        docker_apt
+	    fi
+     	fi
+	git
+	yj_compose
+        yj_lnmp
+	exit 1
+    fi
+    red_error "${paramsError}"
+    ;;
+--help)
+    yjscript_help
+    exit 1
+
+    ;;
+
+*)
+    red_error paramsError
+    exit 1
+
+
+
+
+
+
+
+
+esac	
