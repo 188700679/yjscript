@@ -43,6 +43,7 @@ command         detail
 port            端口类操作
 docker          docker相关操作
 lnmp		php环境安装
+qqrobot         coolq相关操作
 "
 
 }
@@ -52,7 +53,7 @@ help(){
 ==================================================================
 		欢迎使用linux一键辅助工具$project_name $VERSION
 		如有任何问题可以联系$author_qq
-		qq交流群:597755927    
+		qq交流群:$qqun
 		本工具完全开源
 		输入:./yjscript --help 查看所有帮助
 =================================================================
@@ -91,7 +92,22 @@ command		detail
 -yjlnmp		只适用于纯净环境安装php环境
 -open		打开lnmp环境
 -close		关闭lnmp环境
--change php56      切换php5.6,第一次切换需要耗时5min
--change php7	   切换php7	
+-change php56   切换php5.6,第一次切换需要耗时5min
+-change php7	 切换php7	
 "
 }	
+
+qrobot_help(){
+
+    echo "
+command         detail
+
+-install        安装coolq
+-start          开启coolq
+-close          关闭coolq
+-uninstall      卸载coolq
+-init           初始化coolq
+-condif         配置初始化 
+"
+}
+

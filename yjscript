@@ -8,7 +8,7 @@ LANG=en_US.UTF-8
 source assets/detail
 source assets/docker	
 source assets/notice
-
+source assets/command
 if [ ! -n "$1" ];then
     readonly author author_qq
     help
@@ -186,6 +186,64 @@ docker)
 
     red_error "${paramsError}"
 ;;
+qqrobot)
+    
+    if [ "$2" == '--help' ];then
+        qrobot_help
+        exit 1
+    fi
+    if [ "$2" == '-install' ];then
+        if [ ! $3 ];then
+            red_error "${portNo}"
+            exit 1
+        fi
+	if [ ! $4 ];then
+            red_error "${passNo}"
+            exit 1
+        fi
+	qqrobot_install $3 $4
+	
+        exit 1
+    fi
+    if [ "$2" == '-start' ];then
+        docker start coolq
+        exit 1
+    fi
+    if [ "$2" == '-init' ];then
+
+        chmod -R 777 /root/coolq/app/
+        sudo rm -f /root/coolq/app/com.coxxs.tuling123.cpk
+        sudo rm -f /root/coolq/app/com.coxxs.start.cpk
+        sudo rm -f /root/coolq/app/com.coxxs.music.cpk
+	sudo rm -f /root/coolq/app/moe.min.qa.cpk
+        sudo cp assets/package/io.github.richardchien.coolqhttpapi.cpk ~/coolq/app/
+        green_info ${zjloading}
+    fi
+    if [ "$2" == '-config' ];then
+	if [ ! $3 ];then
+            red_error "${portNo}"
+        fi
+	if [ ! $4 ];then
+            red_error "${inApi}"
+        fi
+	qqrobot_config $3 $4	
+	exit 1
+    fi
+    if [ "$2" == '-close' ];then
+        docker  stop coolq
+        exit 1
+    fi
+	
+    if [ "$2" == '-uninstall' ];then
+	qqrobot_uninstall
+        exit 1
+    fi
+    if [ "$2" == '-vncpswd' ];then
+        qqrobot_forget_vnc
+        exit 1
+    fi
+    red_error "${paramsError}"
+;;
 lnmp)
 
     Get_Pack_Manager
@@ -204,22 +262,13 @@ lnmp)
     if [ "$2" == '-change' ];then
     	if [ "$3" == 'php56' ];then
 	    blue_info "loading............................"
-	    \cp -f assets/package/privacy/docker-compose.56.yml www/docker-compose.yml
-	    \cp -f assets/package/privacy/localhost.56.conf www/services/nginx/conf.d/localhost.conf
-	    cd www && docker-compose build php56 
-	    docker container stop php  && docker-compose down > /dev/null 2>&1
-	    docker-compose up -d	
-	    docker exec -it nginx nginx -s reload
-	    echo "切换成功" && exit 1			
+	    eval $c_change56
+	    green_info "{successChange56}" && exit 1			
 	fi
     	if [ "$3" == 'php7' ];then
-	    \cp -f assets/package/privacy/docker-compose.72.yml www/docker-compose.yml
-	    \cp -f assets/package/privacy/localhost.conf www/services/nginx/conf.d/localhost.conf
-	    cd www && docker-compose build php > /dev/null 2>&1
-	    docker container stop php56  && docker-compose down > /dev/null 2>&1
-	    docker-compose up -d	
-	    docker exec -it nginx nginx -s reload
-	    echo "切换成功" && exit 1			
+	    blue_info "loading............................"
+	    eval $c_change7
+	    green_info "${successChange7}" && exit 1			
 	fi
     fi
     if [ "$2" == '-yjlnmp'  ];then 

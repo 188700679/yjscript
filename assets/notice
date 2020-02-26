@@ -7,7 +7,19 @@ paramsError='error1:无效的参数,请使用"./yjscript --help"获取帮助';
 portError="error:缺少端口号!"
 noCompose="木有安装docker-compose,执行'./yjscript -compose'安装"
 yjlnmpInstall="本功能适用于纯净的centos系统安装"
+errorInstall="安装失败"
 successInstall="安装成功"
+uninstallSuccess="卸载成功!!!!!"
+successChange56="php5.6切换成功"
+successChange7="php7切换成功"
+portNo="请填写端口号"
+passNo="请填写VNC密码"
+vnc_passwd="你的vnc密码是:"
+loading="loading...........................!"
+zjloading="组件加载成功!"
+inApi="请填写你项目的入口地址"
+qConfig="配置成功!"
+qNumber="缺少qq号"
 red_error(){
           printf '\033[1;31;40m%b\033[0m\n' "$1";
          exit 0; 
