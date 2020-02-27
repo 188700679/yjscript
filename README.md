@@ -29,7 +29,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 
 #4.命令查询
 
-##端口类
+## 端口类
 
 ./yjscirpt port --help
 
@@ -42,7 +42,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 ./yjscript port -query 80         //查看固定某个端口是否开放
 
 
-##docker相关
+## docker相关
 
 ./yjscript docker --help
 
@@ -57,7 +57,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 ./yjscript docker -install         //安装docker
 
 
-##php环境相关
+## php环境相关
 ./yjscirpt lnmp --help
 
 ./yjscript lnmp -yjlnmp            //适用纯净环境一键安装lnmp,否则有可能出错
@@ -70,7 +70,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 
 ./yjscript lnmp -change php7           //切换php7,非常快
 
-##qqrobot相关
+## qqrobot相关
 ./yjscirpt lnmp --help
 
 
