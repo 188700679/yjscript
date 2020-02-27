@@ -27,7 +27,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 1.如果使用了./yjscript docker -lnmp,尽量不要再使用./yjscript lnmp -yjscript,避免冲突
 
 
-#4.命令查询
+# 4.命令查询
 
 ## 端口类
 
