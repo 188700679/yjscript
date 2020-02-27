@@ -2,7 +2,9 @@ yjscript是一款centos7的上的一键辅助工具。
 
 PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本docker和docker-compose的安装比起官方给的文档快10倍,
 
-同时环境搭建采用了源码编译安装,比起原先的编译安装,时间已经从2个小时缩短到5分钟,搭建php环境就是这么快,更多功能敬请期待.
+同时环境搭建采用了源码编译安装,比起原先的编译安装,时间已经从2个小时缩短到5分钟,搭建php环境就是这么快
+
+更多功能敬请期待.
 
 欢迎加qq群:597755927
 
@@ -28,6 +30,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 #4.命令查询
 
 ##端口类
+
 ./yjscirpt port --help
 
 ./yjscript port -add  80        //开放某个端口
@@ -40,6 +43,7 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 
 
 ##docker相关
+
 ./yjscript docker --help
 
 ./yjscript docker -check           //检查docker版本
@@ -65,6 +69,23 @@ PS:本人优化了很多操作以及简化了docker命令,经测试,这个脚本
 ./yjscript lnmp -change php56      //切换php5.6,第一次切换需要5min
 
 ./yjscript lnmp -change php7           //切换php7,非常快
+
+##qqrobot相关
+./yjscirpt lnmp --help
+
+
+./yjscript lnmp -install            //安装coolq
+
+./yjscript lnmp -start              //开启coolq
+
+./yjscript lnmp -close              //关闭coolq
+
+./yjscript lnmp -uninstall          //卸载coolq
+
+./yjscript lnmp -init               //初始化coolq
+
+./yjscript lnmp -config             //配置初始化 
+
 
 
 ## License
