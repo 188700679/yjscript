@@ -1,3 +1,5 @@
 .idea
 .env
 www
+yjscript.sh
+.gitignore
