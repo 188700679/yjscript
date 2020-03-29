@@ -171,7 +171,7 @@ docker_yum(){
 	sudo groupadd docker
 	sudo usermod -aG docker $USER
 	sudo mkdir -p /etc/docker
-	sudo echo '{"registry-mirrors": ["https://fw4bni9n.mirror.aliyuncs.com" ]}' > /etc/docker/daemon.json
+	sudo echo '{"registry-mirrors": ["https://fw4bni9n.mirror.aliyuncs.com","f1361db2.m.daocloud.io","3laho3y3.mirror.aliyuncs.com" ]}' > /etc/docker/daemon.json
 	sudo systemctl daemon-reload
 	sudo systemctl restart docker
 	docker run hello-world
