@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source assets/notice
+
+qqrobot_config(){
+
+    a='\    "host": "0.0.0.0",'
+    mjson=".json"
+    b=$1$mjson
+    c='\    "post_url":"'
+    e='",'
+    host_name=`hostname`
+    qhttp="http://"
+    d="$c$qhttp$host_name:83$e"
+    sed -i "2c${a}" ${b}
+    sed -i "14c${d}" ${b}
+}
+qqrobot_config $1
+

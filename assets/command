@@ -1,0 +1,59 @@
+#!/bin/bash
+source assets/notice
+c_change56='cp -f assets/package/privacy/docker-compose.56.yml www/docker-compose.yml > /dev/null 2>&1 && \cp -f assets/package/privacy/localhost.56.conf www/services/nginx/conf.d/localhost.conf > /dev/null 2>&1 && cd www && docker-compose build php56 > /dev/null 2>&1 && docker container stop php  && docker-compose down > /dev/null 2>&1 && docker-compose up -d > /dev/null 2>&1 && docker exec -it nginx nginx -s reload'
+
+c_change7='cp -f assets/package/privacy/docker-compose.72.yml www/docker-compose.yml && cp -f assets/package/privacy/localhost.conf www/services/nginx/conf.d/localhost.conf  && cd www && docker-compose build php > /dev/null 2>&1 && docker container stop php56  > /dev/null 2>&1 && docker-compose down > /dev/null 2>&1 && docker-compose up -d > /dev/null 2>&1 && docker exec -it nginx nginx -s reload > /dev/null 2>&1'
+
+qqrobot_install(){
+    sed -i '$a\nameserver 8.8.4.4' /etc/resolv.conf
+    mkdir -p ~/coolq
+    a="docker run --name=coolq -d -p $1"
+    b=":9000 -p 5700:5700 -v ~/coolq/:/home/user/coolq -e VNC_PASSWD=$2 -e COOLQ_URL=http://dlsec.cqp.me/cqp-tuling -e COOLQ_ACCOUNT=123456"
+    c=" coolq/wine-coolq"
+    
+    install=$a$b$c
+    eval $install	
+    if [ $? -ne 0 ];then
+	red_error ${errorInstall}
+
+    else
+	green_info ${successInstall}
+        host_name=`hostname`
+        echo "passNo:$2"
+        echo "访问地址:$host_name:$1"
+    fi
+}
+qqrobot_forget_vnc(){
+    green_info ${vnc_passwd}${VNC_PASSWD}  
+    exit 1 
+}
+qqrobot_uninstall(){ 
+    blue_info ${loading}
+    docker container stop  coolq > /dev/null  2>&1
+    docker container rm  coolq > /dev/null  2>&1
+    docker image rm coolq/wine-coolq 
+    sudo rm -rf /root/coolq
+    green_info ${uninstallSuccess}
+    exit 1
+}
+qqrobot_init(){
+    chmod -R 777 /root/coolq/app/
+        sudo rm -f /root/coolq/app/com.coxxs.tuling123.cpk
+        sudo rm -f /root/coolq/app/com.coxxs.start.cpk
+        sudo rm -f /root/coolq/app/com.coxxs.music.cpk
+        sudo rm -f /root/coolq/app/moe.min.qa.cpk
+        sudo cp assets/package/io.github.richardchien.coolqhttpapi.cpk ~/coolq/app/
+        green_info ${zjloading}
+}
+
+qqrobot_config(){
+    a='\    "host": "0.0.0.0",'
+    mjson=".json"
+    b=$1$mjson
+    c='\    "post_url":"http://'
+    e='",'
+    d=$c$2$e
+    sed -i "2c${a}" ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
+    sed -i "14c${d}" ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
+    green_info ${qConfig}
+}

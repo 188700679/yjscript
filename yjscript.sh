@@ -145,7 +145,7 @@ command         detail
 -close          关闭coolq
 -uninstall      卸载coolq
 -init           初始化coolq
--condif         配置初始化
+-config         配置初始化
 "
 }
 
@@ -227,29 +227,28 @@ yj_lnmp(){
 	echo "访问地址:$host_name:80"
 }
 
-c_change56='cp -f assets/package/privacy/docker-compose.56.yml www/docker-compose.yml  && \cp -f assets/package/privacy/localhost.56.conf www/services/nginx/conf.d/localhost.conf   && cd www && docker-compose build php56 && docker container stop php  && docker-compose down > /dev/null 2>&1 && docker-compose up -d && docker exec -it nginx nginx -s reload'
+c_change56='cp -f
+docker-compose.56.yml www/docker-compose.yml  && \cp -f assets/package/privacy/localhost.56.conf www/services/nginx/conf.d/localhost.conf   && cd www && docker-compose build php56 && docker container stop php  && docker-compose down > /dev/null 2>&1 && docker-compose up -d && docker exec -it nginx nginx -s reload'
 
 c_change7='cp -f assets/package/privacy/docker-compose.72.yml www/docker-compose.yml && cp -f assets/package/privacy/localhost.conf www/services/nginx/conf.d/localhost.conf  && cd www && docker-compose build php > /dev/null 2>&1 && docker container stop php56  > /dev/null 2>&1 && docker-compose down > /dev/null 2>&1 && docker-compose up -d > /dev/null 2>&1 && docker exec -it nginx nginx -s reload > /dev/null 2>&1'
 
 qqrobot_install(){
-    sudo systemctl daemon-reload
-    sudo systemctl restart docker
+
     if [ $3 == 'cqa' ];then
     	b=":9000 -p 5700:5700 -v ~/coolq/:/home/user/coolq -e VNC_PASSWD=$2 -e COOLQ_URL=http://dlsec.cqp.me/cqa-tuling -e COOLQ_ACCOUNT=123456"
 
     else
         b=":9000 -p 5700:5700 -v ~/coolq/:/home/user/coolq -e VNC_PASSWD=$2 -e COOLQ_URL=http://dlsec.cqp.me/cqp-tuling -e COOLQ_ACCOUNT=123456"
     fi
-
+    systemctl daemon-reload
+    systemctl restart docker
+    sed -i '$a\nameserver 0.0.4.4' /etc/resolv.conf
     sed -i '$a\nameserver 8.8.4.4' /etc/resolv.conf
+
     mkdir -p ~/coolq
     a="docker run --name=coolq -d -p $1"
 
     c=" coolq/wine-coolq"
-    
-
-    sed -i '$a\nameserver 0.0.4.4' /etc/resolv.conf
-    sed -i '$a\nameserver 8.8.4.4' /etc/resolv.conf
 
     install=$a$b$c
     eval $install
@@ -293,6 +292,8 @@ qqrobot_config(){
     c='\    "post_url":"http://'
     e='",'
     d=$c$2$e
+    rm -f ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
+    cp assets/package/privacy/xxx ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
     sed -i "2c${a}" ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
     sed -i "14c${d}" ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b}
     dos2unix ~/coolq/data/app/io.github.richardchien.coolqhttpapi/config/${b} > /dev/null 2>&1
@@ -366,7 +367,6 @@ port)
     if [ "$2" == '--help' ];then
 	port
 	exit 1
-    fi
     fi
 
 	
