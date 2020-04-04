@@ -263,7 +263,7 @@ qqrobot_install(){
 	green_info ${successInstall}
         host_name=`hostname`
         echo "$vnc_passwd:$2"
-        echo "访问地址:内网ip:$1"
+        echo "访问地址:外网ip:$1"
     fi
 }
 qqrobot_forget_vnc(){

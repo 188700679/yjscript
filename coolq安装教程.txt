@@ -1,5 +1,6 @@
 请在linux下执行
 如果你要使用qqrobot类库，请走完全部流程
+
 如果你熟悉coolq，只用于安装，那么走到第二步就完事儿了
 
 git clone https://github.com/188700679/yjscript
@@ -11,6 +12,7 @@ chmod 777 ./yjscript
 
 2.安装coolq
 ubuntu请自行安装这个dos2unix
+
 ./yjscript qqrobot -install param1 param2 param3
 param1 :选择端口，会开启一个网页端口，不要和你自己的端口冲突
 param2 :vnc密码，随便填写，不要超过8位
@@ -22,12 +24,12 @@ param3 :选填，默认“cqa”,可选cqp
 这种情况你就只有选择等待，或者过几个小时再来安装
 
 3.初始化coolq
-ubuntu请先安装这个dos2unix
+ubuntu请自行安装这个dos2unix
 ./yjscript qqrobot -init
 
 4.打开浏览器，输入你的ip地址+刚才填写的端口
 进入插件管理或者应用管理
-开启插件：io.github.richardchien.coolqhttpapi.cpk
+开启插件：CQHTTP
 
 5.暂时关闭，避免报毒
 ./yjscript qqrobot -close
@@ -36,13 +38,16 @@ ubuntu请先安装这个dos2unix
 6.配置coolq
 ./yjscript qqrobot -config param1 param2
 param1:填写你要使用的qq号
-param2:填写你的使用地址，假设你使用的是tp框架，那么他默认的控制应该是index
-则你应该填写：内网ip地址:端口号/index/index/index
+param2:填写你的使用地址，假设你使用的是tp框架，你就填写xxxx.xx.xx.xx(内网地址):80(默认80)
+一定要内网地址，否则呼叫不成功，
+
 你应该在index控制器里调用类库
 
 7.开启coolq
 ./yjscript qqrobot -start
-打开浏览器，输入你的外网ip+端口检查是否加载成功
+开始使用qqrobot类库吧
+
+
 
 8.如果要卸载coolq
 ./yjscript qqrobot -uninstall
