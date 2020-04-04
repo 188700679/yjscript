@@ -9,14 +9,14 @@ chmod 777 ./yjscript
 
 2.安装coolq
 ./yjscript qqrobot -install param1 param2 param3
-param1 :会开启一个网页端口，不要和你自己的端口冲突
+param1 :选择端口，会开启一个网页端口，不要和你自己的端口冲突
 param2 :vnc密码，随便填写，不要超过8位
-param3 :选填，默认“cqa”
+param3 :选填，默认“cqa”,可选cqp
 "cqa"是免费版本，不支持图片和音频，你可以选择收费版本“cqp”,每月12元
 
 等待下载
-如果下载超时，有可能是镜像原因，或者代理ip不识别
-参考https://blog.csdn.net/qq_37189082/article/details/100047697
+如果下载超时，有可能是上游服务器的原因，它时好时坏，安装器已经配备了阿里云加速服务，
+这种情况你就只有选择等待，或者过几个小时再来安装
 
 3.初始化coolq
 ./yjscript qqrobot -init
@@ -26,7 +26,7 @@ param3 :选填，默认“cqa”
 开启插件：io.github.richardchien.coolqhttpapi.cpk
 
 5.暂时关闭，避免报毒
-./yjscript qqrobot -stop
+./yjscript qqrobot -close
 
 
 6.配置coolq
