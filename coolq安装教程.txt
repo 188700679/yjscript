@@ -1,13 +1,16 @@
-此安装教程仅支持linux
+请在linux下执行
+如果你要使用qqrobot类库，请走完全部流程
+如果你熟悉coolq，只用于安装，那么走到第二步就完事儿了
 
 git clone https://github.com/188700679/yjscript
 cd yjscript
 chmod 777 ./yjscript
 
-1.是否安装docker
+1.是否安装docker（ubuntu请自行安装）
 如果没有：./yjscript docker -install
 
 2.安装coolq
+ubuntu请自行安装这个dos2unix
 ./yjscript qqrobot -install param1 param2 param3
 param1 :选择端口，会开启一个网页端口，不要和你自己的端口冲突
 param2 :vnc密码，随便填写，不要超过8位
@@ -15,10 +18,11 @@ param3 :选填，默认“cqa”,可选cqp
 "cqa"是免费版本，不支持图片和音频，你可以选择收费版本“cqp”,每月12元
 
 等待下载
-如果下载超时，有可能是上游服务器的原因，它时好时坏，安装器已经配备了阿里云加速服务，
+如果下载缓慢，有可能是上游服务器的原因，安装器已经配备了阿里云加速服务，
 这种情况你就只有选择等待，或者过几个小时再来安装
 
 3.初始化coolq
+ubuntu请先安装这个dos2unix
 ./yjscript qqrobot -init
 
 4.打开浏览器，输入你的ip地址+刚才填写的端口
@@ -38,7 +42,7 @@ param2:填写你的使用地址，假设你使用的是tp框架，那么他默�
 
 7.开启coolq
 ./yjscript qqrobot -start
-打开浏览器，输入你的ip+端口检查是否加载成功
+打开浏览器，输入你的外网ip+端口检查是否加载成功
 
 8.如果要卸载coolq
 ./yjscript qqrobot -uninstall
